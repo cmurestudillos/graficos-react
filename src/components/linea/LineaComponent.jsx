@@ -1,50 +1,40 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import Button from 'react-bootstrap/Button';
-import datosLinea from './ConfiguracionLinea';
+import configLinea from './ConfiguracionLinea';
+
+const generateNumber = i => Math.floor(Math.random() * (i < 2 ? 100 : 1000) + 1);
 
 const LineaComponent = () => {
-    const [datos, setDatos] = useState(datosLinea);
-    
-    useEffect(() => {
-        if(datos !== datosLinea){
-            setDatos(datosLinea);
-        }
-    }, [datos]);
+  const [datos, setDatos] = useState(() => structuredClone(configLinea));
 
-    const randomize = () => {
-        const datosPizza = datos.datasets[0];
-        const datosSpagueti = datos.datasets[1];
-        const datosMacarrones = datos.datasets[2];
+  const randomize = () => {
+    setDatos(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        datasets: prev.data.datasets.map((dataset, i) => ({
+          ...dataset,
+          data: dataset.data.map(() => generateNumber(i)),
+        })),
+      },
+    }));
+  };
 
-        for (let i = 0; i < datosPizza.data.length; i++) {
-            datosPizza.data[i] = generateNumber(i);
-            setDatos(datos.datasets[0].data[i] + datosPizza.data[i])
-        }  
+  return (
+    <div className="container">
+      <h3 className="m-3 chart-title">Grafico de Lineas</h3>
+      <hr className="chart-divider" />
+      <div className="chart-wrapper">
+        <Line id="line-chart" data={datos.data} options={datos.options} />
+      </div>
+      <div className="chart-actions">
+        <Button className="btn btn-4 w-25" onClick={randomize}>
+          Aleatorio
+        </Button>
+      </div>
+    </div>
+  );
+};
 
-        for (let j = 0; j < datosSpagueti.data.length; j++) {
-            datosSpagueti.data[j] = generateNumber(j);
-            setDatos(datos.datasets[1].data[j] + datosSpagueti.data[j])
-        }  
-
-        for (let k = 0; k < datosMacarrones.data.length; k++) {
-            datosMacarrones.data[k] = generateNumber(k);
-            setDatos(datos.datasets[2].data[k] + datosMacarrones.data[k])
-        }  
-    }; 
-
-    const generateNumber = (i) => {
-        return Math.floor((Math.random() * (i < 2 ? 100 : 1000)) + 1);
-    };
-
-    return ( 
-        <div className="container">
-            <h3 className="m-3">Grafico de Lineas</h3>
-            <hr></hr>
-            <Line id="line-chart" width={400} height={400} data={datosLinea} options={datosLinea.options} redraw />
-            <Button className="btn btn-4 btn-block mx-auto w-25" onClick={randomize}>Aleatorio</Button>
-        </div>
-     );
-}
- 
 export default LineaComponent;
