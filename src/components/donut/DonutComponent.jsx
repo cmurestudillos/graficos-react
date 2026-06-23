@@ -1,37 +1,40 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import Button from 'react-bootstrap/Button';
-import datosDonut from './ConfiguracionDonut';
+import configDonut from './ConfiguracionDonut';
+
+const generateNumber = () => Math.round(Math.random() * 100);
 
 const DonutComponent = () => {
-    const [datos, setDatos] = useState(datosDonut);
+  const [datos, setDatos] = useState(() => structuredClone(configDonut));
 
-    useEffect(() => {
-        if(datos !== datosDonut){
-            setDatos(datosDonut);
-        }
-    }, [datos]);
+  const randomize = () => {
+    setDatos(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        datasets: prev.data.datasets.map(dataset => ({
+          ...dataset,
+          data: dataset.data.map(() => generateNumber()),
+        })),
+      },
+    }));
+  };
 
-    const randomize = () => {
-        const datosGrafica = datos.datasets[0];
-        for (let i = 0; i < datosGrafica.data.length; i++) {
-            datosGrafica.data[i] = generateNumber(i);
-            setDatos(datos.datasets[0].data[i] + datosGrafica)
-        }  
-    };   
+  return (
+    <div className="container">
+      <h3 className="m-3 chart-title">Grafico de Donut</h3>
+      <hr className="chart-divider" />
+      <div className="chart-wrapper">
+        <Doughnut id="doughnut-chart" data={datos.data} options={datos.options} />
+      </div>
+      <div className="chart-actions">
+        <Button className="btn btn-4 w-25" onClick={randomize}>
+          Aleatorio
+        </Button>
+      </div>
+    </div>
+  );
+};
 
-    const generateNumber = (i) => {
-        return Math.round(Math.random() * (100));
-    };  
-
-    return ( 
-        <div className="container">
-            <h3 className="m-3">Grafico de Donut</h3>
-            <hr></hr>
-            <Doughnut id="doughnut-chart" width={400} height={400} data={datosDonut} options={datosDonut.options} redraw />
-            <Button className="btn btn-4 btn-block mx-auto w-25" onClick={randomize}>Aleatorio</Button>                
-        </div>
-     );
-}
- 
 export default DonutComponent;

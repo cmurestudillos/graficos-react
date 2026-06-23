@@ -1,13 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Router from './routes/Router';
-import './App.css'
+import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <Router />  
+      <Router />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

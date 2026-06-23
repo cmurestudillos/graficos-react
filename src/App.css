@@ -1,27 +1,29 @@
 .bg-custom {
-  background-image: linear-gradient(15deg, #61dbfb 0%, #80c7d0 100%);
+  background-image: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%);
 }
 
 .btn {
-  flex: 1 1 auto;
-  padding: 10px;
+  padding: 10px 24px;
   text-align: center;
   text-transform: uppercase;
-  transition: 0.5s;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  transition: 0.3s ease;
   background-size: 200% auto;
   color: white;
-  box-shadow: 0 0 20px #eee;
+  box-shadow: 0 4px 14px rgba(58, 71, 213, 0.35);
   border-radius: 10px;
-  border: 1px solid #61dbfb !important;
-  margin: 0 auto;
+  border: none !important;
 }
 
 .btn-4 {
-  background-image: linear-gradient(to right, #80c7d0 0%, #c2f0fb 51%, #61dbfb 100%);
+  background-image: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%);
 }
 
 .btn:hover {
   background-position: right center;
+  box-shadow: 0 6px 20px rgba(0, 210, 255, 0.45);
+  transform: translateY(-1px);
 }
 
 .active {
@@ -29,26 +31,37 @@
   text-decoration: none !important;
 }
 
-@media (max-width: 1920px) {
-  #line-chart{
-    max-width: 800px;
-    max-height: 600px;
-    margin: 0 auto;
+.chart-title {
+  font-weight: 700;
+  background-image: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.chart-divider {
+  height: 3px;
+  border: none;
+  border-radius: 3px;
+  background-image: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%);
+}
+
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  height: 60vh;
+  max-height: 600px;
+  margin: 0 auto 24px;
+}
+
+.chart-actions {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 576px) {
+  .chart-wrapper {
+    height: 50vh;
   }
-  #bar-chart{
-    max-width: 800px;
-    max-height: 600px;
-    margin: 0 auto;
-  }  
-  #doughnut-chart{
-      max-width: 600px;
-      max-height: 800px;
-      margin: 0 auto;
-      padding-bottom: 10px;
-  }
-  #radar-chart{
-    max-width: 600px;
-    max-height: 600px;
-    margin: 0 auto;
-  }  
 }

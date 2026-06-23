@@ -1,44 +1,40 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import Button from 'react-bootstrap/Button';
-import datosBarra from './ConfiguracionBarra';
+import configBarra from './ConfiguracionBarra';
+
+const generateNumber = i => Math.floor(Math.random() * (i < 2 ? 100 : 1000) + 1);
 
 const BarraComponent = () => {
-    const [datos, setDatos] = useState(datosBarra);
-    useEffect(() => {
-        if(datos !== datosBarra){
-            setDatos(datosBarra);
-        }
-    }, [datos]);
+  const [datos, setDatos] = useState(() => structuredClone(configBarra));
 
-    const randomize = () =>  {
-        const datosCholate = datos.datasets[0];
-        const datosAzucar = datos.datasets[1];
+  const randomize = () => {
+    setDatos(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        datasets: prev.data.datasets.map((dataset, i) => ({
+          ...dataset,
+          data: dataset.data.map(() => generateNumber(i)),
+        })),
+      },
+    }));
+  };
 
-        for (let i = 0; i < datosCholate.data.length; i++) {
-            datosCholate.data[i] = generateNumber(i);
-            setDatos(datos.datasets[0].data + datosCholate)
-        }  
+  return (
+    <div className="container">
+      <h3 className="m-3 chart-title">Grafico de Barras</h3>
+      <hr className="chart-divider" />
+      <div className="chart-wrapper">
+        <Bar id="bar-chart" data={datos.data} options={datos.options} />
+      </div>
+      <div className="chart-actions">
+        <Button className="btn btn-4 w-25" onClick={randomize}>
+          Aleatorio
+        </Button>
+      </div>
+    </div>
+  );
+};
 
-        for (let j = 0; j < datosAzucar.data.length; j++) {
-            datosAzucar.data[j] = generateNumber(j);
-            setDatos(datos.datasets[1].data + datosAzucar)
-        }  
-
-    }; 
-
-    const generateNumber = (i) => {
-        return Math.floor((Math.random() * (i < 2 ? 100 : 1000)) + 1);
-    };  
-
-    return ( 
-        <div className="container">
-            <h3 className="m-3">Grafico de Barras</h3>
-            <hr></hr>
-            <Bar id="bar-chart" width={400} height={400} data={datosBarra} options={datosBarra.options} redraw />
-            <Button className="btn btn-4 btn-block mx-auto w-25" onClick={randomize}>Aleatorio</Button>
-        </div>        
-     );
-}
- 
 export default BarraComponent;
